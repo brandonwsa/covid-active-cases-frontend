@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import Nav from './components/Nav';
 import Cases from './components/Cases';
-import Chart from './components/Chart';
 
 function App() {
   return (
@@ -14,13 +13,14 @@ function App() {
         <div className="row">
       
           <main role="main" className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            
       
-            <h2>New Positive Case Increases per day for two weeks: </h2>
-            <Chart />
+            <h2>New Positive Case Increases per day for two weeks in Illinois: </h2>
+            <p>All data is based off of 'The COVID Traking Project' API. The numbers from the API also include propable cases as well.</p>
       
             <br /><br />
 
-            <Cases/>
+            <Cases />
           </main>
         </div>
       </div>

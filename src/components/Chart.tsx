@@ -1,23 +1,40 @@
-import React, {Component} from 'react';
+import React, {Component, Props} from 'react';
 import {Line} from 'react-chartjs-2';
+import {Case} from "../interfaces/case"
 
-class Chart extends Component<{}, {chartData:any}>{
+/**
+ * Uses class component to practice components
+ */
 
-    constructor(props:any){
+class Chart extends React.Component<Case[], {chartData:any}>{
+
+    constructor(props: any){
         super(props);
+
+        //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.
+        let dateLabels: number[] = [];
+        let positiveIncreaseData: number[] = [];
+        try{
+            for (let i=13; i>=0; i--){
+                dateLabels.push(this.props[i].date);
+                positiveIncreaseData.push(this.props[i].positiveIncrease);
+            }
+        }catch(e){
+            console.log(e);
+        }
+        
+        //set state labels and data for graph
         this.state={
             chartData:{
-                labels: [20210124, 20210125, 20210126],
+                labels: dateLabels,
                 datasets: [
                     {
                         label: 'New Positive Cases',
-                        data:[
-                            3000,
-                            4000,
-                            5000
-                        ]
+                        data: positiveIncreaseData,
+                        backgroundColor: "rgba(255, 15, 15, 0.4)"
                     }
                 ]
+                
             }
         }
     }
@@ -28,8 +45,10 @@ class Chart extends Component<{}, {chartData:any}>{
                 <Line
                     data={this.state.chartData}
                     options={{
-                        maintainAspectRatio: false
+                        maintainAspectRatio: false,
+                        responsive: true
                     }}
+                    height={500}
                 />
 
             </div>

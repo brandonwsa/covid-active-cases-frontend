@@ -1,13 +1,19 @@
-import react, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { isPropertySignature } from 'typescript';
 import {Case} from "../interfaces/case"
+import Chart from './Chart';
 
-const Cases = () => {
-    //illinois 2019 population
+/**
+ * Uses hooks to practice hooks
+ */
+
+const Cases: React.FC = () => {
+    //illinois 2019 population. Number will be dynamic in future when user can select state to view.
     const ILpopulation:number = 12670000;
 
     //cases in the past two weeks
     //will most likely use outside of this file.
-    let pastCases: { state:string, date:number, positiveIncrease:number }[] = [];
+    let pastCases: Case[] = [];
 
     //used to monitor active cases
     let totalActiveCases:number = 0;
@@ -20,12 +26,13 @@ const Cases = () => {
     let month = twoWeeksAgo.getMonth() + 1;
     let day = twoWeeksAgo.getDate();
 
+
     //convert year month day into string to get proper date then back to a number.
     //also adds 0 infront of month
     let date:number = +(""+year+"0"+month+""+day);
     
 
-
+    //make cases a state variable
     const [cases, setCases] = useState([])
 
     //get the cases with async
@@ -39,18 +46,19 @@ const Cases = () => {
 
             setCases(data);
 
-            
-
         };
 
         getCases();
 
+        
     }, []);
 
+
     //make an array with the pastCases from two weeks.
+    let casesAdded:number = 0; //ensures that only the last 14 cases are obtained. Without this, sometimes 15 could be obtained when the new case is added for the day.
     cases.map(
         (c: Case) => {
-            if (c.date >= date){
+            if (c.date >= date && casesAdded < 14){
                 let singleCase = {
                     state: c.state,
                     date: c.date,
@@ -62,43 +70,61 @@ const Cases = () => {
                 //add case positiveIncrease to totalActiceCases.
                 totalActiveCases = totalActiveCases + c.positiveIncrease;
 
+                //increase casesAdded
+                casesAdded++;
+
             }
         }
     )
+
     
 
     return(
         <div>
-            <h2>Total recorded active cases, include propable cases: {totalActiveCases}</h2>
-            <h2>Percentage of recorded active cases based on Illinois 2019 population, including propable cases: {(totalActiveCases / ILpopulation)*100+"%"}</h2>
-            <br />
-            <div className="table-responsive">
-                <h2>Past reported live positive cases spanning back two weeks:</h2>
-                <table className="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>State</th>
-                            <th>Date</th>
-                            <th>New Positive Cases Recorded</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {pastCases.map(
-                            (c: Case) => {
-                                return (
-                                    <tr key={c.date}>
-                                        <td>{c.state}</td>
-                                        <td>{c.date}</td>
-                                        <td>{c.positiveIncrease}</td>
-                                    </tr>
-                                );
-                            }
-                        )}
-                    </tbody>
-                </table>
+            <div>
+                {pastCases.length === 0 ? (
+                    <>Loading Graph...</>
+                ) : (
+                    <Chart {...pastCases}/>
+                )}
+            </div>
+            <br /><br />
+            <div>
+                <h5>Total recorded active cases, include propable cases: {totalActiveCases}</h5>
+                <br />
+                <h5>Percentage of recorded active cases based on Illinois 2019 population, including propable cases: {(totalActiveCases / ILpopulation)*100+"%"}</h5>
+                <br />
+                <div className="table-responsive">
+                    <h2>Past reported live positive cases spanning back two weeks:</h2>
+                    <table className="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>State</th>
+                                <th>Date</th>
+                                <th>New Positive Cases Recorded</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pastCases.map(
+                                (c: Case) => {
+                                    return (
+                                        <tr key={c.date}>
+                                            <td>{c.state}</td>
+                                            <td>{c.date}</td>
+                                            <td>{c.positiveIncrease}</td>
+                                        </tr>
+                                    );
+                                }
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
 };
 
 export default Cases;
+
+
+ 
