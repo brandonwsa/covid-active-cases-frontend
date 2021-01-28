@@ -11,8 +11,8 @@ Languages: TypeScript, HTML 5, CSS
 Libraries/Frameworks: React, Chart-js-2
 
 ## Screenshots:
-[Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_1.PNG).
-[Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_2.PNG).
+![Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_1.PNG)
+![Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_2.PNG)
 
 ## TO DO:
 [] Be able to select state.
