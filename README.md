@@ -1,3 +1,25 @@
+# COVID Active Cases Frontend
+
+## About:
+
+This a frontend web application that monitors active covid cases in states in the United States using an outside API 'The COVID Tracking Project'.
+Will soon be deployed on my github pages once fully complete.
+
+## Technologies used:
+
+Languages: TypeScript, HTML 5, CSS
+Libraries/Frameworks: React, Chart-js-2
+
+## Screenshots:
+[Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_1.PNG).
+[Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_2.PNG).
+
+## TO DO:
+[] Be able to select state.
+
+
+# -------------------------------------
+# React Information:
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
