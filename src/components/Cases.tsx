@@ -1,15 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { isPropertySignature } from 'typescript';
-import {Case} from "../interfaces/case"
+import React, { useContext, useEffect, useState } from 'react';
+import { stateContext } from '../contexts/stateContext';
+import {Case} from "../interfaces/case";
 import Chart from './Chart';
+import EmptyChart from './EmptyChart';
 
 /**
+ * Gets the cases from the provided state from user, displays the table, and calculates the total positive active cases and percentage of positive active cases in the state, based on 
+ * state population.
+ * 
  * Uses hooks to practice hooks
  */
 
 const Cases: React.FC = () => {
+
+    //get context
+    const {state, abbr} = React.useContext(stateContext);
+    console.log(abbr)
+
     //illinois 2019 population. Number will be dynamic in future when user can select state to view.
     const ILpopulation:number = 12670000;
+
+    const populations: {} = {
+        "": 1212
+    }
 
     //cases in the past two weeks
     //will most likely use outside of this file.
@@ -36,23 +49,28 @@ const Cases: React.FC = () => {
     const [cases, setCases] = useState([])
 
     //get the cases with async
+
     useEffect(() => {
         const getCases = async () => {
-            const url: string = "https://api.covidtracking.com/v1/states/il/daily.json";
+            if (abbr.length===2){
+                const url: string = "https://api.covidtracking.com/v1/states/".concat(abbr.toLowerCase()).concat("/daily.json");
 
-            const response = await fetch(url);
+                const response = await fetch(url);
 
-            const data = await response.json();
+                const data = await response.json();
 
-            setCases(data);
-
+                setCases(data);
+            }
         };
 
         getCases();
 
         
-    }, []);
+    }, [abbr]);
 
+    
+
+    
 
     //make an array with the pastCases from two weeks.
     let casesAdded:number = 0; //ensures that only the last 14 cases are obtained. Without this, sometimes 15 could be obtained when the new case is added for the day.
@@ -73,6 +91,7 @@ const Cases: React.FC = () => {
                 //increase casesAdded
                 casesAdded++;
 
+
             }
         }
     )
@@ -83,7 +102,10 @@ const Cases: React.FC = () => {
         <div>
             <div>
                 {pastCases.length === 0 ? (
-                    <>Loading Graph...</>
+                    <div>
+                        <h3>Select a state to see the data.</h3>
+                        <EmptyChart />
+                    </div>
                 ) : (
                     <Chart {...pastCases}/>
                 )}
