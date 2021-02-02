@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Line} from 'react-chartjs-2';
 import {Case} from "../interfaces/case"
 
@@ -53,7 +53,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
      */
     componentDidUpdate(prevProps: Case[]){
         //check if user changed to look at a different state's data.
-        if (this.props[0].state != prevProps[0].state){
+        if (this.props[0].state !== prevProps[0].state){
             //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.
             let dateLabels: number[] = [];
             let positiveIncreaseData: number[] = [];

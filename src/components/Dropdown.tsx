@@ -1,4 +1,4 @@
-import React,{ createContext } from 'react';
+import React from 'react';
 import { useState, useContext } from 'react';
 import {State} from "../interfaces/state";
 import {stateContext} from '../contexts/stateContext'
@@ -7,7 +7,7 @@ import {stateContext} from '../contexts/stateContext'
 
 const Dropdown: React.FC = () => {
 
-    const {state, abbr, setState} = React.useContext(stateContext);
+    const {state, abbr, setState} = useContext(stateContext);
 
     //all the states.
     const [states] = useState([
@@ -19,6 +19,7 @@ const Dropdown: React.FC = () => {
         {state: "Colorado", abbr: "CO"},
         {state: "Connecticut", abbr: "CT"},
         {state: "Delaware", abbr: "DE"},
+        {state: "District of Columbia", abbr: "DC"},
         {state: "Florida", abbr: "FL"},
         {state: "Georgia", abbr: "GA"},
         {state: "Hawaii", abbr: "HI"},
@@ -62,12 +63,6 @@ const Dropdown: React.FC = () => {
         {state: "Wisconsin", abbr: "WI"},
         {state: "Wyoming", abbr: "WY"},
     ])
-
-    //state that is selected. empty string is default.
-//    const [statess, setStatess] = useState({
-//        state: "",
-//        abbr: ""
-//    })
 
 
 
