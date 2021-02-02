@@ -19,7 +19,7 @@ Libraries/Frameworks: React, Chart-js-2
 ![Screnshot 6 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_6.PNG)
 
 ## TO DO:
-[] Be able to select state.
+[] Refactor code
 
 
 # -------------------------------------
