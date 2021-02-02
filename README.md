@@ -12,7 +12,11 @@ Libraries/Frameworks: React, Chart-js-2
 
 ## Screenshots:
 ![Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_1.PNG)
-![Screnshot 1 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_2.PNG)
+![Screnshot 2 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_2.PNG)
+![Screnshot 3 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_3.PNG)
+![Screnshot 4 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_4.PNG)
+![Screnshot 5 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_5.PNG)
+![Screnshot 6 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_6.PNG)
 
 ## TO DO:
 [] Be able to select state.
