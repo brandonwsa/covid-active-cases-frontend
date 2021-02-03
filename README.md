@@ -1,9 +1,11 @@
 # COVID Active Cases Frontend
+Link to deployed web application: https://brandonwsa.github.io/covid-active-cases-frontend/
 
 ## About:
 
 This a frontend web application that monitors active covid cases in states in the United States using an outside API 'The COVID Tracking Project'.
-Will soon be deployed on my github pages once fully complete.
+
+Deployed on my github pages, follow link above.
 
 ## Technologies used:
 
