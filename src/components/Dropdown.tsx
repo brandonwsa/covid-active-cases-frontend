@@ -78,7 +78,7 @@ const Dropdown: React.FC = () => {
                         setState: (): void => {}
                     })}
             >
-                <option selected>-</option>
+                <option defaultValue=""></option>
                 {states.map(
                     (s: State) =>{
                         return(

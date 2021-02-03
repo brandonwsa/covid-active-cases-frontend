@@ -118,7 +118,7 @@ const Cases: React.FC = () => {
         getCases();
 
         
-    }, [abbr]);
+    }, [abbr]); //will re get data once abbr is changed.
 
     
 
@@ -126,7 +126,7 @@ const Cases: React.FC = () => {
 
     //make an array with the pastCases from two weeks.
     let casesAdded:number = 0; //ensures that only the last 14 cases are obtained. Without this, sometimes 15 could be obtained when the new case is added for the day.
-    cases.map(
+    cases.forEach(
         (c: Case) => {
             if (c.date >= date && casesAdded < 14){
                 let singleCase = {
@@ -148,6 +148,7 @@ const Cases: React.FC = () => {
         }
     )
 
+
     
 
     return(
@@ -164,12 +165,19 @@ const Cases: React.FC = () => {
             </div>
             <br /><br />
             <div>
-                <h5>Total recorded active cases, include propable cases: {totalActiveCases}</h5>
-                <br />
+                <p>These numbers include propable cases.</p>
+                
                 {population === 0 ? (
-                    <h5>Percentage of recorded active cases, including propable cases, based on ____'s 2019 population of ____ people: {(totalActiveCases / population)*100+"%"}</h5>
+                    <div>
+                        <h5>Total recorded active cases in ___: {totalActiveCases}</h5>
+                        <br />
+                        <h5>Percentage of recorded active cases, including propable cases, based on ____'s 2019 population of ____ people: __%</h5>
+                    </div>
                 ) : (
-                    <h5>Percentage of recorded active cases, including propable cases, based on {state}'s 2019 population of {population} people: {(totalActiveCases / population)*100+"%"}</h5>  
+                    <div>
+                        <h5>Total recorded active cases in {state}: {totalActiveCases}</h5>
+                        <h5>Percentage of recorded active cases, including propable cases, based on {state}'s 2019 population of {population} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
+                    </div>
                 )}
                 <p>Population data is from: https://www.infoplease.com/us/states/state-population-by-rank</p>
                 <br />
