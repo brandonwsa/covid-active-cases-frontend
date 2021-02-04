@@ -22,7 +22,7 @@ function App() {
               
               <Dropdown />
 
-              <p>All data is based off of 'The COVID Tracking Project' API. The numbers from the API also include propable cases as well.</p>
+              
               
               <br /><br />
               

@@ -69,7 +69,7 @@ const Dropdown: React.FC = () => {
     return(
         <div>
             <h2>New Positive Case Increases per day from the last two weeks in {state}: </h2>
-            
+            <p>All data is based off of 'The COVID Tracking Project' API. The numbers from the API also include propable cases as well.</p>
             <select className="float-right btn btn-sm btn-outline-secondary dropdown-toggle"
                     value={abbr}
                     onChange={(e) => setState({
@@ -87,8 +87,9 @@ const Dropdown: React.FC = () => {
                     }
                 )}
                 
-            </select>
+            </select> 
             <h4 className="float-right">Select State: &nbsp;</h4>
+            
         </div>
     );
 }
