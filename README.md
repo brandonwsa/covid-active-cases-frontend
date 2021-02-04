@@ -22,6 +22,7 @@ Libraries/Frameworks: React, Chart-js-2
 
 ## TO DO:
 [] Refactor code
+[] OPtimize for mobile viewing
 
 
 # -------------------------------------
