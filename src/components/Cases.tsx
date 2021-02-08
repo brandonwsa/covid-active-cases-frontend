@@ -3,6 +3,7 @@ import { stateContext } from '../contexts/stateContext';
 import {Case} from "../interfaces/case";
 import Chart from './Chart';
 import EmptyChart from './EmptyChart';
+import formatDate from "../utilities/DateFormatter"
 
 
 /**
@@ -197,7 +198,7 @@ const Cases: React.FC = () => {
                                     return (
                                         <tr key={c.date}>
                                             <td>{c.state}</td>
-                                            <td>{c.date}</td>
+                                            <td>{formatDate(c.date)}</td>
                                             <td>{c.positiveIncrease}</td>
                                         </tr>
                                     );

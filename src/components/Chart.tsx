@@ -1,6 +1,7 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
 import {Case} from "../interfaces/case"
+import formatDate from "../utilities/DateFormatter"
 
 /**
  * A chart that displays the states positive increase in numbers from the past two weeks
@@ -14,12 +15,12 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
         super(props);
 
         //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.
-        let dateLabels: number[] = [];
+        let dateLabels: string[] = [];
         let positiveIncreaseData: number[] = [];
         let state: string = ""; //the state abbreviation. IE: 'il'
         try{
             for (let i=13; i>=0; i--){
-                dateLabels.push(this.props[i].date);
+                dateLabels.push(formatDate(this.props[i].date));
                 positiveIncreaseData.push(this.props[i].positiveIncrease);
             }
             //get the state abbreviation
@@ -55,12 +56,12 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
         //check if user changed to look at a different state's data.
         if (this.props[0].state !== prevProps[0].state){
             //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.
-            let dateLabels: number[] = [];
+            let dateLabels: string[] = [];
             let positiveIncreaseData: number[] = [];
             let state: string = ""; //the state abbreviation. IE: 'il'
             try{
                 for (let i=13; i>=0; i--){
-                    dateLabels.push(this.props[i].date);
+                    dateLabels.push(formatDate(this.props[i].date));
                     positiveIncreaseData.push(this.props[i].positiveIncrease);
                 }
                 //get the state abbreviation
