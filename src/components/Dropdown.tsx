@@ -68,7 +68,12 @@ const Dropdown: React.FC = () => {
 
     return(
         <div>
-            <h2>New Positive Case Increases per day from the last two weeks in {state}: </h2>
+            {state === "" ? (
+                <h2>Select a state to see new Positive Case Increases per day from the last two weeks for that state.</h2>
+            ) : (
+                <h2>New Positive Case Increases per day from the last two weeks in {state}: </h2>
+            )}
+            
             <p>All data is based off of 'The COVID Tracking Project' API. The numbers from the API also include propable cases as well.</p>
             <select className="float-right btn btn-sm btn-outline-secondary dropdown-toggle"
                     value={abbr}

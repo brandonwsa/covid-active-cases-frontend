@@ -22,7 +22,7 @@ class EmptyChart extends React.Component<{}, {chartData:{}, stateAbbr:string}>{
         //set state labels and data for graph
         this.state={
             chartData:{
-                labels: ["year month day", "year month day", "year month day"],
+                labels: ["month-day-year", "month-day-year", "month-day-year"],
                 datasets: [
                     {
                         label: 'New Positive Cases',

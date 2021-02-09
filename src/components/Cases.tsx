@@ -166,16 +166,21 @@ const Cases: React.FC = () => {
             </div>
             <br /><br />
             <div>
-                <p>These numbers include propable cases.</p>
+                
                 
                 {population === 0 ? (
                     <div>
-                        <h5>Total recorded active cases in ___: {totalActiveCases}</h5>
-                        <br />
-                        <h5>Percentage of recorded active cases in ____ based on ____'s 2019 population of ____ people: __%</h5>
+                        <h4>Select a state to see:</h4>
+                        <h5>
+                            <ul>
+                                <li>Total recorded active cases in the state.</li>
+                                <li>Percentage of recorded active cases in the state based on the state's 2019 population.</li>
+                            </ul>
+                        </h5>
                     </div>
                 ) : (
                     <div>
+                        <p>These numbers include propable cases.</p>
                         <h5>Total recorded active cases in {state}: {totalActiveCases}</h5>
                         <h5>Percentage of recorded active cases in {state} based on {state}'s 2019 population of {population} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
                     </div>
