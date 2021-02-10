@@ -1,6 +1,10 @@
 /**
  * Takes a date in number YYYYMMDD and converts it to a string form of MM-DD-YYYY.
+ * 
  * @param date :number. Date in number form, passed in from user. Must be in YearMonthDay format. IE: 20210125
+ * 
+ * @returns date in MM-DD-YYYY form as string.
+ * 
  */
 
 const formatDate = (date: number) => {

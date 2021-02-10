@@ -1,7 +1,7 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import {Case} from "../interfaces/case"
-import formatDate from "../utilities/DateFormatter"
+import {Case} from "../interfaces/case";
+import formatDate from "../utilities/DateFormatter";
 
 /**
  * A chart that displays the states positive increase in numbers from the past two weeks
