@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect, useState, useMemo } from 'react';
 import { stateContext } from '../contexts/stateContext';
 import {Case} from "../interfaces/case";
 import {Percent} from "../interfaces/percent";
@@ -9,6 +9,7 @@ import formatNumber from "../utilities/NumberFormatter";
 import makeDate from "../utilities/MakeDate";
 import selectCases from "../utilities/SelectCases";
 import calcTotalCases from "../utilities/CalcTotalCases";
+import calcPastPercentages from '../utilities/CalcPastPercentages';
 
 
 /**
@@ -80,8 +81,7 @@ const Cases: React.FC = () => {
         "": 0, //if no state selected
     }
 
-    //get the population of the state
-    let population: number = populationsHash[state];
+    let population: number = populationsHash[state]; //get the population of the state
 
     //make cases a state variable
     const [cases, setCases] = useState([])
@@ -106,19 +106,50 @@ const Cases: React.FC = () => {
     }, [abbr]); //will re get data once abbr is changed. IE: user selects a different state.
 
 
-    //get date from two weeks ago
-    let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
 
-    //put date in correct order and format as a number.
-    let date:number = makeDate(twoWeeksAgo);
+    const [pastPercentages, setPastPercentages] = useState<Percent[]>([{
+        state: "",
+        date: 0,
+        percent: 0,
+    }]);
+
+    const [pastTwoWeeksCases, setPastTwoWeeksCases] = useState<Case[]>([{
+        state: "",
+        date: 0,
+        positiveIncrease: 0,
+    }]);
+
+    const [totalActiveCases, setTotalActiveCases] = useState(0);
+
+    //Uses memo to only get cases when state is changed by user. This avoids getting this data with every render.
+    useMemo(() => {
+
+        //get date from two weeks ago from the last case two weeks ago, including that last case and the past cases in the past four weeks
+        let fourWeeksAgo: Date = new Date((Date.now() - 12096e5) - 11232e5); //will be used to calc past two weeks active cases percentage.
+
+        let fourWeeksAgoDate: number = makeDate(fourWeeksAgo); //put date in correct order and format as a number.
+
+        let pastFourWeeksCases: Case[] = selectCases(cases, fourWeeksAgoDate, 28); //get the cases in the past four weeks.
+
+        let pastPercentagesOfActiveCases: Percent[] = calcPastPercentages(pastFourWeeksCases, population); //get the past active cases percentage based of state population spanning back two weeks.
+
+        
+        //get date from two weeks ago, the past cases, and total active cases in the past two weeks.
+        let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
+
+        let twoWeeksAgoDate: number = makeDate(twoWeeksAgo); //put date in correct order and format as a number.
+        
+        let pastTwoWeeksCases: Case[] = selectCases(pastFourWeeksCases, twoWeeksAgoDate, 14);   //get the cases in the past two weeks
+                                                                                                //will most likely use outside of this file.
+
+        let totalActiveCases:number = calcTotalCases(pastTwoWeeksCases);    //get total active cases from past two weeks. 
+                                                                            //used to monitor active cases.
+
+        setPastPercentages(pastPercentagesOfActiveCases);
+        setPastTwoWeeksCases(pastTwoWeeksCases);
+        setTotalActiveCases(totalActiveCases);
+    }, [cases]);
     
-    //get the cases in the past two weeks
-    //will most likely use outside of this file.
-    let pastCases: Case[] = selectCases(cases, date, 14);
-
-    //get total active cases from past two weeks. 
-    //used to monitor active cases.
-    let totalActiveCases:number = calcTotalCases(pastCases);
 
 
     //calc past percentages
@@ -127,13 +158,13 @@ const Cases: React.FC = () => {
     return(
         <div>
             <div>
-                {pastCases.length === 0 ? (
+                {pastTwoWeeksCases.length === 0 ? (
                     <div>
                         <h3>Select a state to see the data.</h3>
                         <EmptyChart />
                     </div>
                 ) : (
-                    <Chart {...pastCases}/>
+                    <Chart {...pastTwoWeeksCases}/>
                 )}
             </div>
             <br /><br />
@@ -170,7 +201,7 @@ const Cases: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {pastCases.map(
+                            {pastTwoWeeksCases.map(
                                 (c: Case) => {
                                     return (
                                         <tr key={c.date}>
