@@ -132,6 +132,7 @@ const Cases: React.FC = () => {
         let pastFourWeeksCases: Case[] = selectCases(cases, fourWeeksAgoDate, 28); //get the cases in the past four weeks.
 
         let pastPercentagesOfActiveCases: Percent[] = calcPastPercentages(pastFourWeeksCases, population); //get the past active cases percentage based of state population spanning back two weeks.
+                                                                                                           //this list of percents are ordered oldest to newest.
 
         
         //get date from two weeks ago, the past cases, and total active cases in the past two weeks.
