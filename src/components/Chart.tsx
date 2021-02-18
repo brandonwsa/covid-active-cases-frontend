@@ -9,9 +9,10 @@ import formatDate from "../utilities/DateFormatter";
  * Uses class component to practice components
  */
 
+
 class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
 
-    constructor(props: Case[]){
+    constructor(props: Case[], chartLabel: string){
         super(props);
 
         //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.

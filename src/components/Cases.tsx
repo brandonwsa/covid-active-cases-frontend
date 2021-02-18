@@ -1,10 +1,14 @@
 import React, {useEffect, useState } from 'react';
 import { stateContext } from '../contexts/stateContext';
 import {Case} from "../interfaces/case";
+import {Percent} from "../interfaces/percent";
 import Chart from './Chart';
 import EmptyChart from './EmptyChart';
 import formatDate from "../utilities/DateFormatter";
 import formatNumber from "../utilities/NumberFormatter";
+import makeDate from "../utilities/MakeDate";
+import selectCases from "../utilities/SelectCases";
+import calcTotalCases from "../utilities/CalcTotalCases";
 
 
 /**
@@ -79,34 +83,13 @@ const Cases: React.FC = () => {
     //get the population of the state
     let population: number = populationsHash[state];
 
-    //cases in the past two weeks
-    //will most likely use outside of this file.
-    let pastCases: Case[] = [];
-
-    //used to monitor active cases
-    let totalActiveCases:number = 0;
-
-    //get date from two weeks ago
-    let twoWeeksAgo = new Date(Date.now() - 12096e5);
-
-    //get the year month and day of date
-    let year = twoWeeksAgo.getFullYear();
-    let month = twoWeeksAgo.getMonth() + 1;
-    let day = twoWeeksAgo.getDate();
-
-
-    //convert year month day into string to get proper date then back to a number.
-    //also adds 0 infront of month
-    let date:number = +(""+year+"0"+month+""+day);
-    
-
     //make cases a state variable
     const [cases, setCases] = useState([])
 
     //get the cases with async
     useEffect(() => {
         const getCases = async () => {
-            if (abbr.length===2){
+            if (abbr.length===2){ //check to make sure a proper state is selected.
                 const url: string = "https://api.covidtracking.com/v1/states/".concat(abbr.toLowerCase()).concat("/daily.json");
 
                 const response = await fetch(url);
@@ -120,35 +103,25 @@ const Cases: React.FC = () => {
         getCases();
 
         
-    }, [abbr]); //will re get data once abbr is changed.
+    }, [abbr]); //will re get data once abbr is changed. IE: user selects a different state.
 
+
+    //get date from two weeks ago
+    let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
+
+    //put date in correct order and format as a number.
+    let date:number = makeDate(twoWeeksAgo);
     
+    //get the cases in the past two weeks
+    //will most likely use outside of this file.
+    let pastCases: Case[] = selectCases(cases, date, 14);
 
-    
-
-    //make an array with the pastCases from two weeks.
-    let casesAdded:number = 0; //ensures that only the last 14 cases are obtained. Without this, sometimes 15 could be obtained when the new case is added for the day.
-    cases.forEach(
-        (c: Case) => {
-            if (c.date >= date && casesAdded < 14){
-                let singleCase = {
-                    state: c.state,
-                    date: c.date,
-                    positiveIncrease: c.positiveIncrease
-                };
-
-                pastCases.push(singleCase);
-
-                //add case positiveIncrease to totalActiceCases.
-                totalActiveCases = totalActiveCases + c.positiveIncrease;
-
-                //increase casesAdded
-                casesAdded++;
+    //get total active cases from past two weeks. 
+    //used to monitor active cases.
+    let totalActiveCases:number = calcTotalCases(pastCases);
 
 
-            }
-        }
-    )
+    //calc past percentages
     
 
     return(
