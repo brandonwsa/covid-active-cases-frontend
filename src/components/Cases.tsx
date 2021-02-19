@@ -3,6 +3,7 @@ import { stateContext } from '../contexts/stateContext';
 import {Case} from "../interfaces/case";
 import {Percent} from "../interfaces/percent";
 import Chart from './Chart';
+import PercentChart from './PercentChart';
 import EmptyChart from './EmptyChart';
 import formatDate from "../utilities/DateFormatter";
 import formatNumber from "../utilities/NumberFormatter";
@@ -149,7 +150,7 @@ const Cases: React.FC = () => {
         setPastPercentages(pastPercentagesOfActiveCases);
         setPastTwoWeeksCases(pastTwoWeeksCases);
         setTotalActiveCases(totalActiveCases);
-    }, [cases]);
+    }, [cases, population]);
     
 
 
@@ -163,9 +164,15 @@ const Cases: React.FC = () => {
                     <div>
                         <h3>Select a state to see the data.</h3>
                         <EmptyChart />
+                        <br />
+                        <PercentChart percents = {[]}/>
                     </div>
                 ) : (
-                    <Chart {...pastTwoWeeksCases}/>
+                    <div>
+                        <Chart {...pastTwoWeeksCases}/>
+                        <br />
+                        <PercentChart percents = {pastPercentages}/>
+                    </div>
                 )}
             </div>
             <br /><br />
@@ -185,8 +192,8 @@ const Cases: React.FC = () => {
                 ) : (
                     <div>
                         <p>These numbers include propable cases.</p>
-                        <h5>Total recorded active cases in {state}: {formatNumber(totalActiveCases)}</h5>
-                        <h5>Percentage of recorded active cases in {state} based on {state}'s 2019 population of {formatNumber(population)} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
+                        <h5>Total recorded active cases as of {formatDate(pastTwoWeeksCases[0].date)} in {state}: {formatNumber(totalActiveCases)}</h5>
+                        <h5>Percentage of recorded active cases as of {formatDate(pastTwoWeeksCases[0].date)} in {state} based on {state}'s 2019 population of {formatNumber(population)} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
                     </div>
                 )}
                 <p>Population data is from: https://www.infoplease.com/us/states/state-population-by-rank</p>

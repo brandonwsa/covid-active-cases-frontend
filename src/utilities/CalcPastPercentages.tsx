@@ -29,7 +29,7 @@ const calcPastPercentages = (pastCases: Case[], population: number) => {
             totalPositiveCases = 0;
         }
     } catch (error) {
-        //do nothing. will give error when user has not selected a state yet. This natural.
+        //do nothing. will give error when user has not selected a state yet. This is natural.
     }
     
         
