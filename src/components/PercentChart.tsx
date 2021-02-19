@@ -47,7 +47,7 @@ const PercentChart: React.FC<{percents: Percent[]}> = ({children, percents}) => 
     //only reget data for chart if state is changed. Prevents too many re-renders from occuring.
     useMemo(() => {
         //make chart with date labels and percentages ONLY if state is selected.
-        if (state != ""){
+        if (state !== ""){
             try {
                 setChartData({
                     labels: dateLabels,
@@ -64,7 +64,7 @@ const PercentChart: React.FC<{percents: Percent[]}> = ({children, percents}) => 
             }
         }
         
-    }, [state]);
+    }, [state, color]);
     
 
 
