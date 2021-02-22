@@ -20,7 +20,7 @@ const selectCases = (cases: Case[], date: number, numOfPastDays: number) => {
         cases.forEach(
             (c: Case) => {
                 if (c.date >= date && casesAdded < numOfPastDays){
-                    let singleCase = {
+                    let singleCase: Case = {
                         state: c.state,
                         date: c.date,
                         positiveIncrease: c.positiveIncrease

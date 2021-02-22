@@ -107,7 +107,7 @@ const Cases: React.FC = () => {
     }, [abbr]); //will re get data once abbr is changed. IE: user selects a different state.
 
 
-    const [currentDate, setCurrentDate] = useState("MM-DD-YYYY");
+    const [currentDate, setCurrentDate] = useState("MM-DD-YYYY"); //used to display current date to user.
 
     const [pastPercentages, setPastPercentages] = useState<Percent[]>([{
         state: "",
@@ -160,9 +160,6 @@ const Cases: React.FC = () => {
     
 
 
-    //calc past percentages
-    
-
     return(
         <div>
             <div>
@@ -188,30 +185,34 @@ const Cases: React.FC = () => {
                 {population === 0 ? (
                     <div>
                         <h4>Select a state to see:</h4>
-                        <h5>
-                            <ul>
-                                <li>Total recorded active cases in the state.</li>
-                                <li>Percentage of recorded active cases in the state based on the state's 2019 population.</li>
-                            </ul>
-                        </h5>
+                        <div className="content-section">
+                            <h5>Total recorded active cases in the state.</h5>
+                        </div>
+                        <div className="content-section">
+                            <h5>Percentage of recorded active cases in the state based on the state's 2019 population.</h5>
+                        </div>
                     </div>
                 ) : (
                     <div>
-                        <p>These numbers include propable cases.</p>
-                        <h5>Total recorded active cases as of {currentDate} in {state}: {formatNumber(totalActiveCases)}</h5>
-                        <h5>Percentage of recorded active cases as of {currentDate} in {state} based on {state}'s 2019 population of {formatNumber(population)} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
+                        <div className="content-section">
+                            <h5>Total recorded active cases as of {currentDate} in {state}: {formatNumber(totalActiveCases)}</h5>
+                        </div>
+                        <div className="content-section">
+                            <h5>Percentage of recorded active cases as of {currentDate} in {state} based on {state}'s 2019 population of {formatNumber(population)} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
+                        </div>
                     </div>
                 )}
-                <p>Population data is from: https://www.infoplease.com/us/states/state-population-by-rank</p>
+                
                 <br />
                 <div className="table-responsive">
                     <h2>Past reported live positive cases spanning back two weeks:</h2>
-                    <table className="table table-striped table-sm">
-                        <thead>
+                    <table className="table table-striped table-sm table-bordered">
+                        <thead className="thead-dark">
                             <tr>
                                 <th>State</th>
                                 <th>Date</th>
                                 <th>New Positive Cases Recorded</th>
+                                <th>Percentage of Active Cases</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -222,6 +223,7 @@ const Cases: React.FC = () => {
                                             <td>{c.state}</td>
                                             <td>{formatDate(c.date)}</td>
                                             <td>{formatNumber(c.positiveIncrease)}</td>
+                                            <td>{pastPercentages.find(({date}) => date === c.date)?.percent}</td>
                                         </tr>
                                     );
                                 }

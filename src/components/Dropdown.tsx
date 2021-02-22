@@ -74,8 +74,9 @@ const Dropdown: React.FC = () => {
                 <h2>New Positive Case Increases per day from the last two weeks in {state}: </h2>
             )}
             
-            <p>All data is based off of 'The COVID Tracking Project' API. The numbers from the API also include propable cases as well.</p>
-            <select className="float-right btn btn-sm btn-outline-secondary dropdown-toggle"
+            <p>All data is based off of 'The COVID Tracking Project' API. The numbers from the API also include propable cases as well and so does this application.</p>
+            <p>Population data is from: https://www.infoplease.com/us/states/state-population-by-rank</p>
+            <select className="float-right btn btn-sm btn-outline-dark dropdown-toggle"
                     value={abbr}
                     onChange={(e) => setState({
                         state: e.target.options[e.target.selectedIndex].text,

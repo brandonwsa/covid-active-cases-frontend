@@ -6,14 +6,16 @@ Hard to see select box with black background on phone
 
 FIXED - Snapchat view link icon is showing react icon instead of rona icon.
 
-make a graph for saved percentages from two weeks.
+DONE - make a graph for saved percentages from two weeks.
 	will have to get past two weeks from last date from current two weeks last date, calc percentage store it, then 
 	go to next date closer to present and do same thing till at current date.
 	make function that calcs percentage by taking in twoweeks list.
-	MAYBE - Give user option to toggle between charts so only one is displayed at a time.
 	JUST HAVE TO MAKE GRAPH NOW. - DONE
-	May want to include percentages in table of past reported live active cases - may not format correctly on mobile
+	DONE - May want to include percentages in table of past reported live active cases - may not format correctly on mobile
 											since past pos cases recorded is long.
+
+MAYBE - Give user option to toggle between charts so only one is displayed at a time.
+	[Show All Charts] [Show New Cases Chart] [Show Past Percentages Chart]
 
 FIXED - dropdown box changes colors when mouse is in and outside of box
 	maybe only make it happen on desktop and not mobile
