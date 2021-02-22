@@ -4,14 +4,17 @@ import {Case} from "../interfaces/case";
 import formatDate from "../utilities/DateFormatter";
 
 /**
- * A chart that displays the states positive increase in numbers from the past two weeks
+ * A chart that displays the states positive increase in numbers from the past two weeks.
+ * Takes a Case[] and puts the data in a Line Chart.
  * 
  * Uses class component to practice components
+ * 
+ * @props Cases array of type Case[]
  */
 
 class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
 
-    constructor(props: Case[]){
+    constructor(props: Case[], chartLabel: string){
         super(props);
 
         //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.

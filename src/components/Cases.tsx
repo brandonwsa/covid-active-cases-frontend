@@ -1,10 +1,16 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import { stateContext } from '../contexts/stateContext';
 import {Case} from "../interfaces/case";
+import {Percent} from "../interfaces/percent";
 import Chart from './Chart';
+import PercentChart from './PercentChart';
 import EmptyChart from './EmptyChart';
 import formatDate from "../utilities/DateFormatter";
 import formatNumber from "../utilities/NumberFormatter";
+import makeDate from "../utilities/MakeDate";
+import selectCases from "../utilities/SelectCases";
+import calcTotalCases from "../utilities/CalcTotalCases";
+import calcPastPercentages from '../utilities/CalcPastPercentages';
 
 
 /**
@@ -76,29 +82,7 @@ const Cases: React.FC = () => {
         "": 0, //if no state selected
     }
 
-    //get the population of the state
-    let population: number = populationsHash[state];
-
-    //cases in the past two weeks
-    //will most likely use outside of this file.
-    let pastCases: Case[] = [];
-
-    //used to monitor active cases
-    let totalActiveCases:number = 0;
-
-    //get date from two weeks ago
-    let twoWeeksAgo = new Date(Date.now() - 12096e5);
-
-    //get the year month and day of date
-    let year = twoWeeksAgo.getFullYear();
-    let month = twoWeeksAgo.getMonth() + 1;
-    let day = twoWeeksAgo.getDate();
-
-
-    //convert year month day into string to get proper date then back to a number.
-    //also adds 0 infront of month
-    let date:number = +(""+year+"0"+month+""+day);
-    
+    let population: number = populationsHash[state]; //get the population of the state
 
     //make cases a state variable
     const [cases, setCases] = useState([])
@@ -106,7 +90,7 @@ const Cases: React.FC = () => {
     //get the cases with async
     useEffect(() => {
         const getCases = async () => {
-            if (abbr.length===2){
+            if (abbr.length===2){ //check to make sure a proper state is selected.
                 const url: string = "https://api.covidtracking.com/v1/states/".concat(abbr.toLowerCase()).concat("/daily.json");
 
                 const response = await fetch(url);
@@ -120,47 +104,78 @@ const Cases: React.FC = () => {
         getCases();
 
         
-    }, [abbr]); //will re get data once abbr is changed.
-
-    
-
-    
-
-    //make an array with the pastCases from two weeks.
-    let casesAdded:number = 0; //ensures that only the last 14 cases are obtained. Without this, sometimes 15 could be obtained when the new case is added for the day.
-    cases.forEach(
-        (c: Case) => {
-            if (c.date >= date && casesAdded < 14){
-                let singleCase = {
-                    state: c.state,
-                    date: c.date,
-                    positiveIncrease: c.positiveIncrease
-                };
-
-                pastCases.push(singleCase);
-
-                //add case positiveIncrease to totalActiceCases.
-                totalActiveCases = totalActiveCases + c.positiveIncrease;
-
-                //increase casesAdded
-                casesAdded++;
+    }, [abbr]); //will re get data once abbr is changed. IE: user selects a different state.
 
 
-            }
+    const [currentDate, setCurrentDate] = useState("MM-DD-YYYY"); //used to display current date to user.
+
+    const [pastPercentages, setPastPercentages] = useState<Percent[]>([{
+        state: "",
+        date: 0,
+        percent: 0,
+    }]);
+
+    const [pastTwoWeeksCases, setPastTwoWeeksCases] = useState<Case[]>([{
+        state: "",
+        date: 0,
+        positiveIncrease: 0,
+    }]);
+
+    const [totalActiveCases, setTotalActiveCases] = useState(0);
+
+    //Uses memo to only get cases when state is changed by user. This avoids getting this data with every render.
+    useMemo(() => {
+
+        //get date from two weeks ago from the last case two weeks ago, including that last case and the past cases in the past four weeks
+        let fourWeeksAgo: Date = new Date((Date.now() - 12096e5) - 11232e5); //will be used to calc past two weeks active cases percentage.
+
+        let fourWeeksAgoDate: number = makeDate(fourWeeksAgo); //put date in correct order and format as a number.
+
+        let pastFourWeeksCases: Case[] = selectCases(cases, fourWeeksAgoDate, 28); //get the cases in the past four weeks.
+
+        let pastPercentagesOfActiveCases: Percent[] = calcPastPercentages(pastFourWeeksCases, population); //get the past active cases percentage based of state population spanning back two weeks.
+                                                                                                           //this list of percents are ordered oldest to newest.
+
+        if (pastFourWeeksCases.length > 0){ //only get the current date when the array is filled. Avoids invalid index error.
+            setCurrentDate(formatDate(pastFourWeeksCases[0].date)); //get most recent date of data.
         }
-    )
+        
+
+        
+        //get date from two weeks ago, the past cases, and total active cases in the past two weeks.
+        let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
+
+        let twoWeeksAgoDate: number = makeDate(twoWeeksAgo); //put date in correct order and format as a number.
+        
+        let pastTwoWeeksCases: Case[] = selectCases(pastFourWeeksCases, twoWeeksAgoDate, 14);   //get the cases in the past two weeks
+                                                                                                //will most likely use outside of this file.
+
+        let totalActiveCases:number = calcTotalCases(pastTwoWeeksCases);    //get total active cases from past two weeks. 
+                                                                            //used to monitor active cases.
+
+        setPastPercentages(pastPercentagesOfActiveCases);
+        setPastTwoWeeksCases(pastTwoWeeksCases);
+        setTotalActiveCases(totalActiveCases);
+    }, [cases, population]);
     
+
 
     return(
         <div>
             <div>
-                {pastCases.length === 0 ? (
+                {pastTwoWeeksCases.length === 0 ? (
                     <div>
                         <h3>Select a state to see the data.</h3>
                         <EmptyChart />
+                        <br />
+                        <PercentChart percents = {[]}/>
                     </div>
                 ) : (
-                    <Chart {...pastCases}/>
+                    <div>
+                        <Chart {...pastTwoWeeksCases}/>
+                        <br />
+                        <PercentChart percents = {pastPercentages}/>
+                    </div>
                 )}
             </div>
             <br /><br />
@@ -170,40 +185,45 @@ const Cases: React.FC = () => {
                 {population === 0 ? (
                     <div>
                         <h4>Select a state to see:</h4>
-                        <h5>
-                            <ul>
-                                <li>Total recorded active cases in the state.</li>
-                                <li>Percentage of recorded active cases in the state based on the state's 2019 population.</li>
-                            </ul>
-                        </h5>
+                        <div className="content-section">
+                            <h5>Total recorded active cases in the state.</h5>
+                        </div>
+                        <div className="content-section">
+                            <h5>Percentage of recorded active cases in the state based on the state's 2019 population.</h5>
+                        </div>
                     </div>
                 ) : (
                     <div>
-                        <p>These numbers include propable cases.</p>
-                        <h5>Total recorded active cases in {state}: {formatNumber(totalActiveCases)}</h5>
-                        <h5>Percentage of recorded active cases in {state} based on {state}'s 2019 population of {formatNumber(population)} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
+                        <div className="content-section">
+                            <h5>Total recorded active cases as of {currentDate} in {state}: {formatNumber(totalActiveCases)}</h5>
+                        </div>
+                        <div className="content-section">
+                            <h5>Percentage of recorded active cases as of {currentDate} in {state} based on {state}'s 2019 population of {formatNumber(population)} people: {((totalActiveCases / population)*100).toFixed(2)+"%"}</h5>  
+                        </div>
                     </div>
                 )}
-                <p>Population data is from: https://www.infoplease.com/us/states/state-population-by-rank</p>
+                
                 <br />
                 <div className="table-responsive">
                     <h2>Past reported live positive cases spanning back two weeks:</h2>
-                    <table className="table table-striped table-sm">
-                        <thead>
+                    <table className="table table-striped table-sm table-bordered">
+                        <thead className="thead-dark">
                             <tr>
                                 <th>State</th>
                                 <th>Date</th>
                                 <th>New Positive Cases Recorded</th>
+                                <th>Percentage of Active Cases</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {pastCases.map(
+                            {pastTwoWeeksCases.map(
                                 (c: Case) => {
                                     return (
                                         <tr key={c.date}>
                                             <td>{c.state}</td>
                                             <td>{formatDate(c.date)}</td>
                                             <td>{formatNumber(c.positiveIncrease)}</td>
+                                            <td>{pastPercentages.find(({date}) => date === c.date)?.percent}</td>
                                         </tr>
                                     );
                                 }

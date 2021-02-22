@@ -19,10 +19,8 @@ Libraries/Frameworks: React, Chart-js-2
 ![Screnshot 4 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_4.PNG)
 ![Screnshot 5 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_5.PNG)
 ![Screnshot 6 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_6.PNG)
+![Screnshot 7 of application](https://github.com/brandonwsa/covid-active-cases-frontend/blob/main/screenshots/ss_7.PNG)
 
-## TO DO:
-[] Refactor code
-[] OPtimize for mobile viewing
 
 
 # -------------------------------------

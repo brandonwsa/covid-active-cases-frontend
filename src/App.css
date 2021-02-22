@@ -136,3 +136,14 @@ option {
   color: black;
 }
 
+/*
+* Content sections
+*/
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
