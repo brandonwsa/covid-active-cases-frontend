@@ -13,6 +13,13 @@ function App() {
       
       <Nav/>
       
+      <div className="content-section-alert">
+        <h3>Unforntunately the COVID Tracking Project has officially ended on March 7th 2021, due to government improvement on tracking the virus.</h3>
+        <p>This web app will still function up until current data for past two weeks in non existant. In the mean time, 
+          a new reliable API is being searched for to continue this project.
+        </p>
+      </div>
+
       <div className="container-fluid">
         <div className="row">
       

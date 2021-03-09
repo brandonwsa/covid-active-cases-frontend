@@ -22,12 +22,22 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
         let positiveIncreaseData: number[] = [];
         let state: string = ""; //the state abbreviation. IE: 'il'
         try{
-            for (let i=13; i>=0; i--){
-                dateLabels.push(formatDate(this.props[i].date));
-                positiveIncreaseData.push(this.props[i].positiveIncrease);
+            for (let i=0; i<14; i++){
+                //break out of loop if props[i] is undefined.
+                //prevents undefined error from occuring.
+                if (this.props[i] === undefined){
+                    break;
+                }
+                else {
+                    dateLabels.push(formatDate(this.props[i].date));
+                    positiveIncreaseData.push(this.props[i].positiveIncrease); 
+                } 
             }
             //get the state abbreviation
-            state = this.props[0].state
+            if (this.props[0] !== undefined){
+                state = this.props[0].state
+            }
+            
         }catch(e){
             console.log(e);
         }
@@ -63,12 +73,22 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
             let positiveIncreaseData: number[] = [];
             let state: string = ""; //the state abbreviation. IE: 'il'
             try{
-                for (let i=13; i>=0; i--){
-                    dateLabels.push(formatDate(this.props[i].date));
-                    positiveIncreaseData.push(this.props[i].positiveIncrease);
+                for (let i=0; i<14; i++){
+                    //break out of loop if props[i] is undefined.
+                    //prevents undefined error from occuring.
+                    if (this.props[i] === undefined){
+                        break;
+                    }
+                    else {
+                        dateLabels.push(formatDate(this.props[i].date));
+                        positiveIncreaseData.push(this.props[i].positiveIncrease); 
+                    } 
                 }
                 //get the state abbreviation
-                state = this.props[0].state
+                if (this.props[0] !== undefined){
+                    state = this.props[0].state
+                }
+                
             }catch(e){
                 console.log(e);
             }
@@ -103,7 +123,14 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                     data={this.state.chartData}
                     options={{
                         maintainAspectRatio: false,
-                        responsive: true
+                        responsive: true,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
                     }}
                     height={500}
                 />

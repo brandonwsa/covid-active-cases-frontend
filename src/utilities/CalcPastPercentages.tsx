@@ -14,7 +14,6 @@ const calcPastPercentages = (pastCases: Case[], population: number) => {
     //do this till at current date.
 
     try {
-
         for (let i=0; i<14; i++){ //goes through first two weeks of cases from beginning. newest to oldest.
             for (let j=i; j<14+i; j++){ //starts at current case in the foreach loop
                 totalPositiveCases = totalPositiveCases + pastCases[j].positiveIncrease;

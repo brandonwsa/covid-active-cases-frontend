@@ -75,7 +75,15 @@ const PercentChart: React.FC<{percents: Percent[]}> = ({children, percents}) => 
                 data={chartData}
                 options={{
                     maintainAspectRatio: false,
-                    responsive: true
+                    responsive: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                suggestedMax: 1,
+                                beginAtZero: true
+                            }
+                        }]
+                    }
                 }}
                 height={500}
             />

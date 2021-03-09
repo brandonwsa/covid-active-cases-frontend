@@ -147,3 +147,10 @@ option {
   margin-bottom: 20px;
 }
 
+.content-section-alert {
+  background: #ff6767;
+  padding: 10px 20px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
