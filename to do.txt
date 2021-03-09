@@ -1,4 +1,11 @@
-
+Get new API:
+	https://data.cdc.gov/resource/9mfq-cb36.json?state=IL
+	can also SoQL results: https://dev.socrata.com/docs/queries/
+	Example: https://data.cdc.gov/resource/9mfq-cb36.json?$query=select%20*%20where%20(state=%22IL%22%20and%20submission_date%3E%222021-03-01T00:00:00.000%22)
+		OR
+		https://data.cdc.gov/resource/9mfq-cb36.json?$query=select * where(state="IL" and submission_date>="2021-03-01T00:00:00.000")
+		simply get state from dropdown and concate date from two weeks ago to T00:00:00.000 then async the url
+		
 
 DONE - Format numbers to include commas: 000,000,000
 
