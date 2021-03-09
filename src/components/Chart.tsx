@@ -37,6 +37,9 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
             if (this.props[0] !== undefined){
                 state = this.props[0].state
             }
+
+            dateLabels.reverse();
+            positiveIncreaseData.reverse();
             
         }catch(e){
             console.log(e);
@@ -88,6 +91,9 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                 if (this.props[0] !== undefined){
                     state = this.props[0].state
                 }
+
+                dateLabels.reverse();
+                positiveIncreaseData.reverse();
                 
             }catch(e){
                 console.log(e);
