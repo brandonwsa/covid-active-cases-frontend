@@ -14,14 +14,14 @@ const calcPastPercentages = (pastCases: Case[], population: number) => {
     //do this till at current date.
 
     try {
-        for (let i=0; i<pastCases.length/2; i++){ //goes through first two weeks of cases from beginning. newest to oldest.
-            for (let j=i; j<(pastCases.length/2)+i; j++){ //starts at current case in the foreach loop
-                totalPositiveCases = totalPositiveCases + pastCases[j].positiveIncrease;
+        for (let i=0; i<14; i++){ //goes through first two weeks of cases from beginning. newest to oldest.
+            for (let j=i; j<14+i; j++){ //starts at current case in the foreach loop
+                totalPositiveCases = totalPositiveCases + pastCases[j].new_case;
             }
 
             percentages.push({
                 state: pastCases[i].state,
-                date: pastCases[i].date,
+                submission_date: pastCases[i].submission_date,
                 percent: Number(((totalPositiveCases / population)*100).toFixed(2)),
             });
 

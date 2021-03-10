@@ -5,7 +5,7 @@ import {Percent} from "../interfaces/percent";
 import Chart from './Chart';
 import PercentChart from './PercentChart';
 import EmptyChart from './EmptyChart';
-import formatDate from "../utilities/DateFormatter";
+import DateFormatter from "../utilities/DateFormatter";
 import formatNumber from "../utilities/NumberFormatter";
 import makeDate from "../utilities/MakeDate";
 import selectCases from "../utilities/SelectCases";
@@ -87,11 +87,15 @@ const Cases: React.FC = () => {
     //make cases a state variable
     const [cases, setCases] = useState([])
 
+    //date state variable to get cases from CDC API
+    //assuming a month is 30 days. So will be 30 days ago.
+    const [monthAgoDate, setMonthAgoDate] = useState("")
+
     //get the cases with async
     useEffect(() => {
         const getCases = async () => {
             if (abbr.length===2){ //check to make sure a proper state is selected.
-                const url: string = "https://api.covidtracking.com/v1/states/".concat(abbr.toLowerCase()).concat("/daily.json");
+                const url: string = 'https://data.cdc.gov/resource/9mfq-cb36.json?$query=select * where(state="'+abbr+'"+ and submission_date>="'+monthAgoDate+'")';
 
                 const response = await fetch(url);
 
@@ -104,21 +108,21 @@ const Cases: React.FC = () => {
         getCases();
 
         
-    }, [abbr]); //will re get data once abbr is changed. IE: user selects a different state.
+    }, [abbr, monthAgoDate]); //will re get data once abbr is changed. IE: user selects a different state.
 
 
     const [currentDate, setCurrentDate] = useState("MM-DD-YYYY"); //used to display current date to user.
 
     const [pastPercentages, setPastPercentages] = useState<Percent[]>([{
         state: "",
-        date: 0,
+        submission_date: "",
         percent: 0,
     }]);
 
     const [pastTwoWeeksCases, setPastTwoWeeksCases] = useState<Case[]>([{
         state: "",
-        date: 0,
-        positiveIncrease: 0,
+        submission_date: "",
+        new_case: 0,
     }]);
 
     const [totalActiveCases, setTotalActiveCases] = useState(0);
@@ -129,15 +133,15 @@ const Cases: React.FC = () => {
         //get date from two weeks ago from the last case two weeks ago, including that last case and the past cases in the past four weeks
         let fourWeeksAgo: Date = new Date((Date.now() - 12096e5) - 11232e5); //will be used to calc past two weeks active cases percentage.
 
-        let fourWeeksAgoDate: number = makeDate(fourWeeksAgo); //put date in correct order and format as a number.
-
+        let fourWeeksAgoDate: string = makeDate(fourWeeksAgo); //put date in correct order and format as a string.
+       
         let pastFourWeeksCases: Case[] = selectCases(cases, fourWeeksAgoDate, 28); //get the cases in the past four weeks.
 
         let pastPercentagesOfActiveCases: Percent[] = calcPastPercentages(pastFourWeeksCases, population); //get the past active cases percentage based of state population spanning back two weeks.
                                                                                                            //this list of percents are ordered oldest to newest.
 
         if (pastFourWeeksCases.length > 0){ //only get the current date when the array is filled. Avoids invalid index error.
-            setCurrentDate(formatDate(pastFourWeeksCases[0].date)); //get most recent date of data.
+            setCurrentDate(DateFormatter.formatDate(pastFourWeeksCases[0].submission_date)); //get most recent date of data.
         }
         
 
@@ -145,14 +149,14 @@ const Cases: React.FC = () => {
         //get date from two weeks ago, the past cases, and total active cases in the past two weeks.
         let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
 
-        let twoWeeksAgoDate: number = makeDate(twoWeeksAgo); //put date in correct order and format as a number.
+        let twoWeeksAgoDate: string = makeDate(twoWeeksAgo); //put date in correct order and format as a string.
         
         let pastTwoWeeksCases: Case[] = selectCases(pastFourWeeksCases, twoWeeksAgoDate, 14);   //get the cases in the past two weeks
                                                                                                 //will most likely use outside of this file.
-
         let totalActiveCases:number = calcTotalCases(pastTwoWeeksCases);    //get total active cases from past two weeks. 
                                                                             //used to monitor active cases.
 
+        setMonthAgoDate(makeDate(new Date(Date.now() - 25920e5)));
         setPastPercentages(pastPercentagesOfActiveCases);
         setPastTwoWeeksCases(pastTwoWeeksCases);
         setTotalActiveCases(totalActiveCases);
@@ -219,11 +223,11 @@ const Cases: React.FC = () => {
                             {pastTwoWeeksCases.map(
                                 (c: Case) => {
                                     return (
-                                        <tr key={c.date}>
+                                        <tr key={c.submission_date}>
                                             <td>{c.state}</td>
-                                            <td>{formatDate(c.date)}</td>
-                                            <td>{formatNumber(c.positiveIncrease)}</td>
-                                            <td>{pastPercentages.find(({date}) => date === c.date)?.percent}</td>
+                                            <td>{DateFormatter.formatDate(c.submission_date)}</td>
+                                            <td>{formatNumber(c.new_case)}</td>
+                                            <td>{pastPercentages.find(({submission_date}) => submission_date === c.submission_date)?.percent}</td>
                                         </tr>
                                     );
                                 }

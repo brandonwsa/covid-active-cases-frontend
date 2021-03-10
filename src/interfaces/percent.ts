@@ -1,5 +1,5 @@
 export interface Percent{
     state: string;
-    date: number;
+    submission_date: string;
     percent: number;
 }

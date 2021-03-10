@@ -1,7 +1,7 @@
 import {Line} from "react-chartjs-2";
 import {useState, useMemo} from "react";
 import {Percent} from "../interfaces/percent";
-import formatDate from "../utilities/DateFormatter";
+import DateFormatter from "../utilities/DateFormatter";
 
 /**
  * Takes a Percent[] and displays it in a Line Chart.
@@ -21,7 +21,7 @@ const PercentChart: React.FC<{percents: Percent[]}> = ({children, percents}) => 
     try {
         percents.forEach(
             (p: Percent) => {
-                dateLabels.push(formatDate(p.date));
+                dateLabels.push(DateFormatter.formatDate(p.submission_date));
                 percentData.push(p.percent);
                 state = p.state;
             }

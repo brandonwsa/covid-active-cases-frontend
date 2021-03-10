@@ -1,7 +1,7 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
 import {Case} from "../interfaces/case";
-import formatDate from "../utilities/DateFormatter";
+import DateFormatter from "../utilities/DateFormatter";
 
 /**
  * A chart that displays the states positive increase in numbers from the past two weeks.
@@ -19,7 +19,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
 
         //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.
         let dateLabels: string[] = [];
-        let positiveIncreaseData: number[] = [];
+        let new_caseData: number[] = [];
         let state: string = ""; //the state abbreviation. IE: 'il'
         try{
             for (let i=0; i<14; i++){
@@ -29,8 +29,8 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                     break;
                 }
                 else {
-                    dateLabels.push(formatDate(this.props[i].date));
-                    positiveIncreaseData.push(this.props[i].positiveIncrease); 
+                    dateLabels.push(DateFormatter.formatDate(this.props[i].submission_date));
+                    new_caseData.push(this.props[i].new_case); 
                 } 
             }
             //get the state abbreviation
@@ -39,7 +39,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
             }
 
             dateLabels.reverse();
-            positiveIncreaseData.reverse();
+            new_caseData.reverse();
             
         }catch(e){
             console.log(e);
@@ -52,7 +52,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                 datasets: [
                     {
                         label: 'New Positive Cases',
-                        data: positiveIncreaseData,
+                        data: new_caseData,
                         backgroundColor: "rgba(255, 15, 15, 0.4)"
                     }
                 ]
@@ -73,7 +73,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
         if (this.props[0].state !== prevProps[0].state){
             //make the label array with dates. Have to use for loop since this.props.map and forEach are undefined.
             let dateLabels: string[] = [];
-            let positiveIncreaseData: number[] = [];
+            let new_caseData: number[] = [];
             let state: string = ""; //the state abbreviation. IE: 'il'
             try{
                 for (let i=0; i<14; i++){
@@ -83,8 +83,8 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                         break;
                     }
                     else {
-                        dateLabels.push(formatDate(this.props[i].date));
-                        positiveIncreaseData.push(this.props[i].positiveIncrease); 
+                        dateLabels.push(DateFormatter.formatDate(this.props[i].submission_date));
+                        new_caseData.push(this.props[i].new_case); 
                     } 
                 }
                 //get the state abbreviation
@@ -93,7 +93,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                 }
 
                 dateLabels.reverse();
-                positiveIncreaseData.reverse();
+                new_caseData.reverse();
                 
             }catch(e){
                 console.log(e);
@@ -106,7 +106,7 @@ class Chart extends React.Component<Case[], {chartData:{}, stateAbbr:string}>{
                     datasets: [
                         {
                             label: 'New Positive Cases',
-                            data: positiveIncreaseData,
+                            data: new_caseData,
                             backgroundColor: "rgba(255, 15, 15, 0.4)"
                         }
                     ]

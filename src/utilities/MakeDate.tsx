@@ -1,7 +1,7 @@
 /**
- * Takes a Date type and formats the date in a YYYYMMDD format as a number.
- * @param date the date to format in the YYYYMMDD format as a number.
- * @returns newDate number as YYYYMMDD.
+ * Takes a Date type and formats the date in a YYYY-MM-DDT00:00:00.000 format as a string.
+ * @param date the date to format in the YYYY-MM-DDT00:00:00.000 format as a string.
+ * @returns newDate string as YYYY-MM-DDT00:00:00.000.
  */
 const makeDate = (date: Date) => {
 
@@ -11,9 +11,9 @@ const makeDate = (date: Date) => {
     let day = date.getDate();
 
 
-    //convert year month day into string to get proper date then back to a number.
+    //convert year month day into string to get proper date then concat T00:00:00.000.
     //also adds 0 infront of month
-    let newDate:number = +(""+year+"0"+month+""+day);
+    let newDate:string = ""+year+"-0"+month+"-"+day+"T00:00:00.000";
 
     return newDate;
 

@@ -12,7 +12,7 @@ const calcTotalCases = (pastCases: Case[]) => {
     try {
         pastCases.forEach(
             (c: Case) => {
-                totalCases = totalCases + c.positiveIncrease;
+                totalCases = totalCases + c.new_case;
             }
         );
     } catch (error) {

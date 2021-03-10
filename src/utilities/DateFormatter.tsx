@@ -1,21 +1,35 @@
 /**
- * Takes a date in number YYYYMMDD and converts it to a string form of MM-DD-YYYY.
+ * Takes a date in string form as YYYY-MM-DD and converts it to a string form of MM-DD-YYYY.
  * 
- * @param date :number. Date in number form, passed in from user. Must be in YearMonthDay format. IE: 20210125
+ * @param date :string. Date in string form, passed in from user. Must be in Year-Month-Day format. IE: 2021-01-25...
  * 
  * @returns date in MM-DD-YYYY form as string.
  * 
  */
 
-const formatDate = (date: number) => {
+const formatDate = (date: string) => {
     //get the year month day
-    let dateStr: string = date.toString();
-    let year: string = dateStr.substring(0, 4);
-    let month: string = dateStr.substring(4, 6);
-    let day: string = dateStr.substring(6, 8);
+    let year: string = date.substring(0, 4);
+    let month: string = date.substring(5, 7);
+    let day: string = date.substring(8, 10);
 
     //format and return
     return month.concat("-").concat(day).concat("-").concat(year);
 }
 
-export default formatDate;
+/**
+ * Takes a date in string form as YYYY-MM-DD and converts it to a number form of YYYYMMDD
+ * @param date :string. Date in string form, passed in from user. Must be in Year-Month-Day format. IE: 2021-01-25...
+ * @returns date in YYYYMMDD form as number.
+ */
+const formatDateNumber = (date: string) => {
+    //get the year month day
+    let year: string = date.substring(0, 4);
+    let month: string = date.substring(5, 7);
+    let day: string = date.substring(8, 10);
+
+    //format and return as number
+    return +(year.concat(month).concat(day));
+}
+
+export default {formatDate, formatDateNumber};

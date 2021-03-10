@@ -1,3 +1,15 @@
+DONE - fourWeeksAgoDate and twoWeeksAgoDate will now be strings
+DONE - makeDate() will now return a string date instead of number
+DONT NEED - selectCases() will now take a string date instead of number date.
+DONE - formatDate() will now take in string instead of number & will now remove T:00... from date return string as usual
+
+
+
+
+
+DONE - format number correctly with new data
+
+
 Get new API:
 	https://data.cdc.gov/resource/9mfq-cb36.json?state=IL
 	can also SoQL results: https://dev.socrata.com/docs/queries/
@@ -5,6 +17,8 @@ Get new API:
 		OR
 		https://data.cdc.gov/resource/9mfq-cb36.json?$query=select * where(state="IL" and submission_date>="2021-03-01T00:00:00.000")
 		simply get state from dropdown and concate date from two weeks ago to T00:00:00.000 then async the url
+
+COVID Tracking Project API url used:   const url: string = "https://api.covidtracking.com/v1/states/".concat(abbr.toLowerCase()).concat("/daily.json");
 		
 
 DONE - Format numbers to include commas: 000,000,000
