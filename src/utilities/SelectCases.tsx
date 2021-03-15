@@ -29,7 +29,6 @@ const selectCases = (cases: Case[], date: string, numOfPastDays: number) => {
                     };
 
                     pastCases.push(singleCase);
-
                     //increase casesAdded
                     casesAdded++;
                 }

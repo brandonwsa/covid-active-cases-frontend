@@ -144,7 +144,6 @@ const Cases: React.FC = () => {
             setCurrentDate(DateFormatter.formatDate(pastFourWeeksCases[0].submission_date)); //get most recent date of data.
         }
         
-
         
         //get date from two weeks ago, the past cases, and total active cases in the past two weeks.
         let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
@@ -160,7 +159,12 @@ const Cases: React.FC = () => {
         setPastPercentages(pastPercentagesOfActiveCases);
         setPastTwoWeeksCases(pastTwoWeeksCases);
         setTotalActiveCases(totalActiveCases);
-    }, [cases, population]);
+    }, [cases]); //Though there is a warning to include population as a dependency, doing so makes useMemo run twice when
+                //user changes state as useMemo will first see the change in population and run useMemo, then will also 
+                //see changes in cases and will run useMemo again. This is unnecessary as we really only need to run 
+                //useMemo when cases are changed as this is what is important. Running twice will only create poor 
+                //performance with a mass amount of users. Plus population is a constant variable, unless we make 
+                //population be based off of an API that monitors it daily where it changes constantly.
     
 
 
