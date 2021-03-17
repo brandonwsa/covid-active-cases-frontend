@@ -17,6 +17,10 @@ const selectCases = (cases: Case[], date: string, numOfPastDays: number) => {
     let casesAdded:number = 0; //ensures that only the last specified amount of cases are obtained. Without this, 
                                 //sometimes 15 cases could be obtained when the new case is added for the day when user only wanted 14.
 
+
+    //sort cases in correct order, newest date to oldest date.
+    cases.sort((a, b) => DateFormatter.formatDateNumber(b.submission_date) - DateFormatter.formatDateNumber(a.submission_date));
+
     try {
         cases.forEach(
             (c: Case) => {
@@ -38,8 +42,6 @@ const selectCases = (cases: Case[], date: string, numOfPastDays: number) => {
         console.log("ERROR: "+error+" Custom Message: No cases to get previous cases from.");
     }
     
-    //sort pastCases in correct order, newest date to oldest date.
-    pastCases.sort((a, b) => DateFormatter.formatDateNumber(b.submission_date) - DateFormatter.formatDateNumber(a.submission_date));
 
     return pastCases;
 }

@@ -131,7 +131,7 @@ const Cases: React.FC = () => {
     useMemo(() => {
 
         //get date from two weeks ago from the last case two weeks ago, including that last case and the past cases in the past four weeks
-        let fourWeeksAgo: Date = new Date((Date.now() - 12096e5) - 11232e5); //will be used to calc past two weeks active cases percentage.
+        let fourWeeksAgo: Date = new Date(((Date.now() - 864e5) - 12096e5) - 11232e5); //will be used to calc past two weeks active cases percentage.
 
         let fourWeeksAgoDate: string = makeDate(fourWeeksAgo); //put date in correct order and format as a string.
        
@@ -146,7 +146,7 @@ const Cases: React.FC = () => {
         
         
         //get date from two weeks ago, the past cases, and total active cases in the past two weeks.
-        let twoWeeksAgo: Date = new Date(Date.now() - 12096e5);
+        let twoWeeksAgo: Date = new Date((Date.now() - 864e5) - 12096e5);
 
         let twoWeeksAgoDate: string = makeDate(twoWeeksAgo); //put date in correct order and format as a string.
         
